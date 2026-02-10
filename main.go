@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/fs"
+	"log/slog"
 	"os"
 )
 
@@ -29,6 +31,20 @@ func parsePath(path string) (paths []string) {
 	return paths
 }
 
+func validatePaths(paths []string) (result []string) {
+	
+	for i, path := range paths {
+		if fs.ValidPath(path) {
+			result = append(result, path)
+			continue
+		}
+		
+		slog.Error(fmt.Sprintf("Path '%v' number %v from PATH environment variable is not valid", path, i + 1))
+	}
+	
+	return result
+}
+
 func main() {
 	args := os.Args
 	
@@ -37,6 +53,8 @@ func main() {
 	}
 	
 	paths := parsePath(os.Getenv("PATH"))
+	
+	paths = validatePaths(paths)
 	
 	fmt.Println(paths)
 	
