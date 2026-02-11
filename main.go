@@ -18,7 +18,7 @@ func sliceToMap[T comparable](slice []T) map[T]struct{} {
 }
 
 func help() {
-	fmt.Printf("Usage:\n\t%v [-h|--help] <executables: name1 name2 ... nameN>\n", os.Args[0])
+	fmt.Printf("Usage:\n\t%v [-h|--help] target <executables: name1 name2 ... nameN>\n", os.Args[0])
 	os.Exit(0)
 }
 
