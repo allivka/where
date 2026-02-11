@@ -56,6 +56,37 @@ func validatePaths(paths []string) (result []string) {
 	return result
 }
 
+func getPathExecutables(path string) (names []string, err error) {
+	
+	dir, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	
+	stat, err := dir.Stat()
+	if err != nil {
+		return nil, err
+	}
+	
+	if !stat.IsDir() {
+		return nil, fmt.Errorf("File '%v' is not a directory", path)
+	}
+	
+	entries, err := dir.Readdir(0)
+	
+	if err != nil {
+		slog.Error(fmt.Sprintf("Failed reading inside of directory '%v': %v", path, err))
+	}
+	
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			names = append(names, entry.Name())
+		}
+	}
+	
+	return names, nil
+}
+
 func main() {
 	args := os.Args
 	
@@ -68,5 +99,13 @@ func main() {
 	paths = validatePaths(paths)
 	
 	fmt.Println(paths)
+	
+	for _, path := range paths {
+		names, err := getPathExecutables(path)
+		if err != nil {
+			slog.Error("Path '%v': %v", path, err)
+		}
+		fmt.Printf("%v:\n\t%v", path, names)
+	}
 	
 }
