@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -122,11 +123,18 @@ func main() {
 	}
 
 	target := args[1]
-
+	
+	var found = false
+	
 	for _, path := range paths {
 		if _, ok := files[path][target]; ok {
 			fmt.Println(filepath.Join(path, target))
+			found = true
 		}
+	}
+	
+	if !found {
+		log.Fatalf("No file with name '%v' found in directories listed in PATH environment variable", target)
 	}
 
 }
