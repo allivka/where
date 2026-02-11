@@ -1,2 +1,2 @@
 #!/bin/sh
-go build -o where main.go
+go build -o where .

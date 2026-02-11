@@ -30,6 +30,14 @@ You can also build for every platform with:
 ./multibuild.sh
 ```
 
+the executables will be located in builds folder and have names of os_platform the were built for
+
 ## installation
 
-just move the *where* executable at the any directory set in path
+Just move the *where* executable at the any directory set in path
+
+Or you could install with go:
+
+```shell
+go install github.com/allivka/where
+```
